@@ -19,7 +19,7 @@ class Post(models.Model):
         'Дата публикации', auto_now_add=True
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts'
+        User, on_delete=models.CASCADE, related_name='posts', blank=False
     )
     image = models.ImageField(
         upload_to='posts/', null=True, blank=True
