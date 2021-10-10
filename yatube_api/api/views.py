@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from posts.models import Comment, Group, Post, User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
+from posts.models import Comment, Group, Post, User
 from .serializers import (CommentSerializer, GroupSerializer, PostSerializer,
                           UserSerializer)
 
@@ -17,7 +17,7 @@ class UserViewSet(ModelViewSet):
 class GroupViewSet(ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [IsAuthenticated | IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         obj = get_object_or_404(Group, id=self.kwargs['pk'])
@@ -28,7 +28,7 @@ class GroupViewSet(ReadOnlyModelViewSet):
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated | IsAdminUser]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
     def get_object(self):
@@ -53,7 +53,7 @@ class PostViewSet(ModelViewSet):
 class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated | IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         obj = get_object_or_404(Comment, id=self.kwargs['pk'])
